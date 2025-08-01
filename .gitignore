@@ -1,0 +1,10 @@
+.~lock.*
+*.cdr
+*.odg
+*.tar.gz
+Captu*.png
+Packages
+.build
+.MD
+.MD/
+arquivos/
