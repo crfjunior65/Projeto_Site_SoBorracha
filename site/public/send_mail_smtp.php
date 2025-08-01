@@ -2,16 +2,7 @@
 // ===== VERSÃO SMTP - MAIS CONFIÁVEL =====
 
 // Configurações SMTP - EDITE AQUI
-$smtp_config = [
-    'host' => 'mail.soborracha.com.br',                    // Servidor SMTP
-    'port' => 587,                                 // Porta (587 para TLS, 465 para SSL)
-    'username' => 'admin@soborracha.com.br',     // Seu e-mail
-    'password' => '#C@mp0Gr@nd&',                // Sua senha ou senha de app
-    'encryption' => 'tls',                         // tls ou ssl
-    'from_email' => 'admin@soborracha.com.br',   // E-mail de origem
-    'from_name' => 'Só Borracha Ltda',             // Nome de origem
-    'to_email' => 'ronaldo@soborracha.com.br'      // E-mail de destino
-];
+
 
 // Headers de segurança
 header('Content-Type: application/json');
