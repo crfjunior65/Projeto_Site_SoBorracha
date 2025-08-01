@@ -9,3 +9,4 @@ Packages
 .MD/
 arquivos/
 send_mail_smtp.php
+site/public/send_mail_smtp.php
