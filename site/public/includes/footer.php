@@ -4,8 +4,8 @@
             <div class="footer-sections">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <img src="images/LogoSB-Photoroom.png" alt="Só Borracha Ltda">
-                        <h3>Só Borracha Ltda</h3>
+                        <img src="images/LogoSB-Photoroom.png" alt="Só Borracha ">
+                        <h3>Só Borracha</h3>
                         <p>Especialistas em borrachas automotivas para todas as marcas desde 1995.</p>
                     </div>
                 </div>
@@ -13,15 +13,15 @@
                 <div class="footer-section">
                     <h4>Contato</h4>
                     <div class="contact-item">
-                        <i class="icon-location"></i>
+                        <i class="fas fa-map-marker-alt"></i>
                         <span>Av. Calogeras, 1300<br>Campo Grande - MS</span>
                     </div>
                     <div class="contact-item">
-                        <i class="icon-phone"></i>
+                        <i class="fas fa-phone"></i>
                         <span>(67) 99918-0553</span>
                     </div>
                     <div class="contact-item">
-                        <i class="icon-email"></i>
+                        <i class="fas fa-envelope"></i>
                         <span>ronaldo@soborracha.com.br</span>
                     </div>
                 </div>
@@ -51,13 +51,18 @@
     <div class="footer-bottom">
         <div class="container">
             <div class="footer-bottom-content">
-                <p>&copy; <?php echo date('Y'); ?> Só Borracha Ltda. Todos os direitos reservados.</p>
-                <div class="footer-social">
-                    <a href="https://wa.me/5567999180553" target="_blank" aria-label="WhatsApp">
-                        <i class="icon-whatsapp"></i>
+                <p class="footer-credits" style="display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    &copy; <?php echo date('Y'); ?> Só Borracha. Todos os direitos reservados.
+                    <a href="https://www.cloudfix.net.br" target="_blank" rel="noopener" aria-label="Desenvolvido por CloudFix" title="Desenvolvido por CloudFix" style="display:inline-flex;align-items:center;">
+                        <img src="images/ClodFix-Icone.png" alt="CloudFix" style="height:24px;width:auto;vertical-align:middle;">
                     </a>
-                    <a href="#" target="_blank" aria-label="Instagram">
-                        <i class="icon-instagram"></i>
+                </p>
+                <div class="footer-social">
+                    <a href="https://wa.me/5567999180553" target="_blank" rel="noopener" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
                     </a>
                 </div>
             </div>

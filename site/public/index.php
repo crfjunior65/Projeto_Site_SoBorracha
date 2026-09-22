@@ -1,5 +1,14 @@
 <?php 
-$pageTitle = "Só Borracha Ltda - Borrachas Automotivas Multi Marcas | Campo Grande - MS";
+require_once __DIR__ . '/includes/ProductStore.php';
+$store = new ProductStore();
+$vitrine = $store->getSettings();
+// Destaques para a home: produtos marcados como destaque; se não houver, os 3 primeiros
+$ativos = $store->all(true);
+$destaques = array_values(array_filter($ativos, function ($p) { return !empty($p['destaque']); }));
+if (empty($destaques)) { $destaques = array_slice($ativos, 0, 3); }
+$destaques = array_slice($destaques, 0, 3);
+
+$pageTitle = "Só Borracha - Borrachas Automotivas Multi Marcas | Campo Grande - MS";
 $pageDescription = "Especialistas em borrachas automotivas para todas as marcas. Varejo e atacado em Campo Grande - MS. Qualidade garantida há mais de 25 anos.";
 ?>
 <!DOCTYPE html>
@@ -28,6 +37,7 @@ $pageDescription = "Especialistas em borrachas automotivas para todas as marcas.
     <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/refinamentos.css">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
@@ -121,61 +131,33 @@ $pageDescription = "Especialistas em borrachas automotivas para todas as marcas.
         <div class="container">
             <div class="section-header">
                 <h2>Principais Produtos</h2>
-                <p>Borrachas automotivas para todas as marcas e modelos</p>
+                <p>Alguns exemplos do nosso catálogo — trabalhamos com milhares de itens</p>
             </div>
             <div class="products-grid">
+                <?php foreach ($destaques as $p): ?>
                 <div class="product-card">
                     <div class="product-image">
-                        <img src="images/borracha-porta.jpg" alt="Borracha de Porta Automotiva" loading="lazy">
+                        <img src="<?php echo htmlspecialchars($p['imagem'] ?: 'images/BorrachaAutomotiva.png'); ?>" alt="<?php echo htmlspecialchars($p['nome']); ?>" loading="lazy">
                         <div class="product-overlay">
                             <a href="produtos.php" class="btn btn-small">Ver Detalhes</a>
                         </div>
                     </div>
                     <div class="product-info">
-                        <h3>Borrachas de Porta</h3>
-                        <p>Vedação perfeita para todas as marcas de veículos</p>
+                        <h3><?php echo htmlspecialchars($p['nome']); ?></h3>
+                        <p><?php echo htmlspecialchars($p['descricao']); ?></p>
+                        <?php if (!empty($p['features'])): ?>
                         <div class="product-features">
-                            <span class="feature-tag">Multi Marcas</span>
-                            <span class="feature-tag">Qualidade Premium</span>
+                            <?php foreach (array_slice($p['features'], 0, 2) as $feat): ?>
+                                <span class="feature-tag"><?php echo htmlspecialchars($feat); ?></span>
+                            <?php endforeach; ?>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
-                
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="images/borracha-parabrisa.jpg" alt="Borracha de Parabrisa" loading="lazy">
-                        <div class="product-overlay">
-                            <a href="produtos.php" class="btn btn-small">Ver Detalhes</a>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Borrachas de Parabrisa</h3>
-                        <p>Instalação segura e vedação garantida</p>
-                        <div class="product-features">
-                            <span class="feature-tag">Instalação Inclusa</span>
-                            <span class="feature-tag">Garantia</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="images/borracha-vidro.jpg" alt="Borracha de Vidro Lateral" loading="lazy">
-                        <div class="product-overlay">
-                            <a href="produtos.php" class="btn btn-small">Ver Detalhes</a>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3>Borrachas de Vidro</h3>
-                        <p>Vedação lateral e traseira para todos os modelos</p>
-                        <div class="product-features">
-                            <span class="feature-tag">Resistente</span>
-                            <span class="feature-tag">Durável</span>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
             <div class="products-cta">
+                <p style="margin-bottom:16px;color:#64748b;">Estes são apenas alguns exemplos. Temos <strong>milhares de opções</strong> para todas as marcas e modelos.</p>
                 <a href="produtos.php" class="btn btn-primary">Ver Todos os Produtos</a>
             </div>
         </div>
@@ -186,7 +168,7 @@ $pageDescription = "Especialistas em borrachas automotivas para todas as marcas.
         <div class="container">
             <div class="about-content">
                 <div class="about-text">
-                    <h2>Sobre a Só Borracha Ltda</h2>
+                    <h2>Sobre a Só Borracha</h2>
                     <p class="about-intro">
                         Há mais de 25 anos no mercado, somos referência em borrachas automotivas 
                         em Campo Grande - MS, oferecendo produtos de qualidade e atendimento especializado.
@@ -208,7 +190,7 @@ $pageDescription = "Especialistas em borrachas automotivas para todas as marcas.
                     <a href="sobre.php" class="btn btn-outline">Saiba Mais</a>
                 </div>
                 <div class="about-image">
-                    <img src="images/loja-fachada.jpg" alt="Fachada da Só Borracha Ltda" loading="lazy">
+                    <img src="images/loja-fachada.jpg" alt="Fachada da Só Borracha " loading="lazy">
                 </div>
             </div>
         </div>

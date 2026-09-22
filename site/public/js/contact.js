@@ -12,6 +12,10 @@ function initContactForm() {
     const contactForm = document.getElementById('contact-form');
     
     if (contactForm) {
+        // Sinaliza para main.js que o formulário já está sendo tratado aqui,
+        // evitando handlers de submit duplicados.
+        window.__contactFormHandled = true;
+
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -33,22 +37,37 @@ function submitForm(form) {
     // Get form data
     const formData = new FormData(form);
     
-    // Simulate form submission (replace with actual endpoint)
-    setTimeout(() => {
-        // Show success message
-        showNotification('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
-        
-        // Reset form
-        form.reset();
-        
+    // Send to backend
+    fetch('send_mail_final.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(data.message, 'success');
+            form.reset();
+            clearAllValidationErrors();
+        } else {
+            showNotification(data.message || 'Erro ao enviar mensagem. Tente novamente.', 'error');
+            
+            // Show field-specific errors if available
+            if (data.errors) {
+                data.errors.forEach(error => {
+                    showNotification(error, 'error');
+                });
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        showNotification('Erro de conexão. Tente novamente ou entre em contato via WhatsApp.', 'error');
+    })
+    .finally(() => {
         // Reset button
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-        
-        // Clear any validation errors
-        clearAllValidationErrors();
-        
-    }, 2000);
+    });
 }
 
 // ===== FORM VALIDATION =====

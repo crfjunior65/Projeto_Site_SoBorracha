@@ -1,0 +1,227 @@
+<?php
+require_once __DIR__ . '/includes/PartnerStore.php';
+
+$pageTitle = "Nossos Parceiros - Só Borracha "" | Rede de Distribuidores e Revendedores";
+$pageDescription = "Conheça a rede de parceiros da Só Borracha: distribuidores, revendedores, lojas e oficinas credenciadas. Faça parte da nossa rede e amplie seus negócios.";
+
+$store = new PartnerStore();
+$parceiros = $store->all(true); // apenas ativos, destaques primeiro
+
+// Tipos presentes (para os filtros)
+$tiposPresentes = [];
+foreach ($parceiros as $p) {
+    $t = $p['tipo'] ?? '';
+    if ($t && !in_array($t, $tiposPresentes)) {
+        $tiposPresentes[] = $t;
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $pageTitle; ?></title>
+    <meta name="description" content="<?php echo $pageDescription; ?>">
+    <meta name="keywords" content="parceiros só borracha, distribuidores, revendedores, rede de parceiros, borrachas automotivas, Campo Grande MS">
+
+    <meta property="og:title" content="<?php echo $pageTitle; ?>">
+    <meta property="og:description" content="<?php echo $pageDescription; ?>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://soborracha.com.br/parceiros.php">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/suppliers.css">
+    <link rel="stylesheet" href="css/refinamentos.css">
+</head>
+<body>
+    <?php include 'includes/header.php'; ?>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <h1>Nossa Rede de Parceiros</h1>
+                <p>Distribuidores, revendedores e oficinas credenciadas que levam a qualidade Só Borracha para todo o Brasil</p>
+                <nav class="breadcrumb">
+                    <a href="index.php">Início</a>
+                    <span>/</span>
+                    <span>Parceiros</span>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intro -->
+    <section class="suppliers-intro">
+        <div class="container">
+            <div class="intro-content">
+                <div class="intro-text">
+                    <h2>Uma rede que só cresce</h2>
+                    <p>A Só Borracha acredita que o sucesso é construído em parceria. Nossa rede de distribuidores, revendedores e oficinas credenciadas leva produtos de qualidade a cada vez mais cidades — e você também pode fazer parte dela.</p>
+                    <div class="intro-stats">
+                        <div class="stat-item">
+                            <div class="stat-number"><?php echo count($parceiros); ?>+</div>
+                            <div class="stat-label">Parceiros na Rede</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">Anos de Experiência</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Suporte ao Parceiro</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="intro-image">
+                    <img src="images/fornecedores-qualidade.jpg" alt="Rede de parceiros Só Borracha" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtro por tipo -->
+    <?php if (!empty($tiposPresentes)): ?>
+    <section class="suppliers-filter">
+        <div class="container">
+            <div class="filter-content">
+                <h3>Filtrar por tipo de parceiro</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-specialty="all">
+                        <i class="fas fa-th"></i>
+                        Todos
+                    </button>
+                    <?php foreach ($tiposPresentes as $t): ?>
+                    <button class="filter-btn" data-specialty="<?php echo htmlspecialchars($t); ?>">
+                        <i class="fas fa-handshake"></i>
+                        <?php echo htmlspecialchars(PartnerStore::$tipos[$t] ?? $t); ?>
+                    </button>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php endif; ?>
+
+    <!-- Grid de parceiros -->
+    <section class="suppliers-main">
+        <div class="container">
+            <?php if (empty($parceiros)): ?>
+                <div class="empty-state">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Em breve</h3>
+                    <p>Estamos ampliando nossa rede de parceiros. Volte em breve ou entre em contato para fazer parte.</p>
+                </div>
+            <?php else: ?>
+                <div class="suppliers-grid" id="suppliersGrid">
+                    <?php foreach ($parceiros as $p): ?>
+                        <div class="supplier-card" data-specialties="<?php echo htmlspecialchars($p['tipo'] ?? ''); ?>">
+                            <?php if (!empty($p['featured'])): ?>
+                                <div class="supplier-badge">Parceiro Destaque</div>
+                            <?php endif; ?>
+
+                            <div class="supplier-header">
+                                <?php if (!empty($p['logo_image'])): ?>
+                                    <div class="supplier-logo">
+                                        <img src="uploads/parceiros/<?php echo htmlspecialchars($p['logo_image']); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>" loading="lazy">
+                                    </div>
+                                <?php else: ?>
+                                    <div class="supplier-logo-placeholder">
+                                        <i class="fas fa-handshake"></i>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div class="supplier-info">
+                                    <h3><?php echo htmlspecialchars($p['name']); ?></h3>
+                                    <?php if (!empty($p['company_name'])): ?>
+                                        <p class="company-name"><?php echo htmlspecialchars($p['company_name']); ?></p>
+                                    <?php endif; ?>
+                                    <?php if (!empty($p['city']) && !empty($p['state'])): ?>
+                                        <p class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <?php echo htmlspecialchars($p['city'] . ' - ' . $p['state']); ?>
+                                        </p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <?php if (!empty($p['tipo'])): ?>
+                                <div class="supplier-specialties">
+                                    <div class="specialties-tags">
+                                        <span class="specialty-tag"><?php echo htmlspecialchars(PartnerStore::$tipos[$p['tipo']] ?? $p['tipo']); ?></span>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if (!empty($p['description'])): ?>
+                                <div class="supplier-description">
+                                    <p><?php echo htmlspecialchars($p['description']); ?></p>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="supplier-contact">
+                                <?php if (!empty($p['phone'])): ?>
+                                    <a href="tel:<?php echo preg_replace('/[^0-9+]/', '', $p['phone']); ?>" class="contact-item">
+                                        <i class="fas fa-phone"></i>
+                                        <?php echo htmlspecialchars($p['phone']); ?>
+                                    </a>
+                                <?php endif; ?>
+                                <?php if (!empty($p['email'])): ?>
+                                    <a href="mailto:<?php echo htmlspecialchars($p['email']); ?>" class="contact-item">
+                                        <i class="fas fa-envelope"></i>
+                                        <?php echo htmlspecialchars($p['email']); ?>
+                                    </a>
+                                <?php endif; ?>
+                                <?php if (!empty($p['website'])): ?>
+                                    <a href="<?php echo htmlspecialchars($p['website']); ?>" class="contact-item" target="_blank" rel="noopener">
+                                        <i class="fas fa-globe"></i>
+                                        Visitar Site
+                                    </a>
+                                <?php endif; ?>
+                                <?php if (!empty($p['whatsapp'])): ?>
+                                    <a href="https://wa.me/<?php echo preg_replace('/[^0-9]/', '', $p['whatsapp']); ?>" class="contact-item whatsapp" target="_blank" rel="noopener">
+                                        <i class="fab fa-whatsapp"></i>
+                                        WhatsApp
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
+
+    <!-- CTA: seja um parceiro -->
+    <section class="partnership-cta">
+        <div class="container">
+            <div class="cta-content">
+                <div class="cta-text">
+                    <h2>Quer fazer parte da nossa rede?</h2>
+                    <p>Seja um distribuidor, revendedor ou oficina credenciada Só Borracha. Ofereça produtos de qualidade comprovada, com suporte e condições especiais para parceiros.</p>
+                </div>
+                <div class="cta-actions">
+                    <a href="https://wa.me/5567999180553?text=Ol%C3%A1!%20Gostaria%20de%20me%20tornar%20um%20parceiro%2Fdistribuidor%20da%20S%C3%B3%20Borracha." class="btn btn-whatsapp" target="_blank" rel="noopener">
+                        <i class="fab fa-whatsapp"></i>
+                        Quero ser parceiro
+                    </a>
+                    <a href="contato.php" class="btn btn-outline">
+                        <i class="fas fa-envelope"></i>
+                        Falar com a equipe
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <?php include 'includes/footer.php'; ?>
+
+    <script src="js/main.js"></script>
+    <script src="js/suppliers.js"></script>
+</body>
+</html>

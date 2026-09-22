@@ -1,5 +1,10 @@
 <?php 
-$pageTitle = "Produtos - Borrachas Automotivas Multi Marcas | Só Borracha Ltda";
+require_once __DIR__ . '/includes/ProductStore.php';
+$store = new ProductStore();
+$produtos = $store->all(true); // apenas ativos
+$vitrine = $store->getSettings();
+
+$pageTitle = "Produtos - Borrachas Automotivas Multi Marcas | Só Borracha";
 $pageDescription = "Confira nossa linha completa de borrachas automotivas: porta, parabrisa, vidro lateral e muito mais. Qualidade garantida para todas as marcas.";
 ?>
 <!DOCTYPE html>
@@ -22,6 +27,7 @@ $pageDescription = "Confira nossa linha completa de borrachas automotivas: porta
     <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/products.css">
+    <link rel="stylesheet" href="css/refinamentos.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -30,8 +36,8 @@ $pageDescription = "Confira nossa linha completa de borrachas automotivas: porta
     <section class="page-header">
         <div class="container">
             <div class="page-header-content">
-                <h1>Nossos Produtos</h1>
-                <p>Borrachas automotivas de qualidade para todas as marcas e modelos</p>
+                <h1><?php echo htmlspecialchars($vitrine['vitrine_titulo'] ?: 'Nossos Produtos'); ?></h1>
+                <p><?php echo htmlspecialchars($vitrine['vitrine_subtitulo'] ?: 'Borrachas automotivas de qualidade para todas as marcas e modelos'); ?></p>
                 <nav class="breadcrumb">
                     <a href="index.php">Início</a>
                     <span>/</span>
@@ -79,33 +85,34 @@ $pageDescription = "Confira nossa linha completa de borrachas automotivas: porta
     <section class="products-main">
         <div class="container">
             <div class="products-grid" id="products-grid">
-                
-                <!-- Borrachas de Porta -->
-                <div class="product-item" data-category="porta">
+                <?php if (empty($produtos)): ?>
+                    <p style="grid-column:1/-1;text-align:center;color:#64748b;">Nenhum produto cadastrado no momento. Fale conosco no WhatsApp para consultar nosso catálogo completo.</p>
+                <?php else: foreach ($produtos as $p): ?>
+                <div class="product-item" data-category="<?php echo htmlspecialchars($p['categoria']); ?>">
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="images/borracha-porta-universal.jpg" alt="Borracha de Porta Universal" loading="lazy">
-                            <div class="product-badge">Mais Vendido</div>
-                            <div class="product-overlay">
-                                <button class="btn btn-small" onclick="openProductModal('porta-universal')">
-                                    <i class="fas fa-eye"></i>
-                                    Ver Detalhes
-                                </button>
-                            </div>
+                            <img src="<?php echo htmlspecialchars($p['imagem'] ?: 'images/BorrachaAutomotiva.png'); ?>" alt="<?php echo htmlspecialchars($p['nome']); ?>" loading="lazy">
+                            <?php if (!empty($p['badge'])): ?>
+                                <div class="product-badge"><?php echo htmlspecialchars($p['badge']); ?></div>
+                            <?php endif; ?>
                         </div>
                         <div class="product-info">
-                            <h3>Borracha de Porta Universal</h3>
-                            <p>Vedação perfeita para portas de veículos nacionais e importados</p>
+                            <h3><?php echo htmlspecialchars($p['nome']); ?></h3>
+                            <p><?php echo htmlspecialchars($p['descricao']); ?></p>
+                            <?php if (!empty($p['features'])): ?>
                             <div class="product-features">
-                                <span class="feature-tag">Universal</span>
-                                <span class="feature-tag">Resistente</span>
-                                <span class="feature-tag">Fácil Instalação</span>
+                                <?php foreach ($p['features'] as $feat): ?>
+                                    <span class="feature-tag"><?php echo htmlspecialchars($feat); ?></span>
+                                <?php endforeach; ?>
                             </div>
+                            <?php endif; ?>
+                            <?php if (!empty($p['compatibilidade'])): ?>
                             <div class="product-brands">
-                                <small>Compatível com: Volkswagen, Fiat, Chevrolet, Ford, Toyota</small>
+                                <small>Compatível com: <?php echo htmlspecialchars($p['compatibilidade']); ?></small>
                             </div>
+                            <?php endif; ?>
                             <div class="product-actions">
-                                <button class="btn btn-primary" onclick="sendWhatsAppMessage('Gostaria de saber mais sobre Borracha de Porta Universal')">
+                                <button class="btn btn-primary" onclick="sendWhatsAppMessage('Gostaria de saber mais sobre <?php echo htmlspecialchars(addslashes($p['nome'])); ?>')">
                                     <i class="fab fa-whatsapp"></i>
                                     Consultar Preço
                                 </button>
@@ -113,116 +120,19 @@ $pageDescription = "Confira nossa linha completa de borrachas automotivas: porta
                         </div>
                     </div>
                 </div>
-
-                <!-- Borrachas de Parabrisa -->
-                <div class="product-item" data-category="parabrisa">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="images/borracha-parabrisa-gol.jpg" alt="Borracha de Parabrisa Gol" loading="lazy">
-                            <div class="product-overlay">
-                                <button class="btn btn-small" onclick="openProductModal('parabrisa-gol')">
-                                    <i class="fas fa-eye"></i>
-                                    Ver Detalhes
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3>Borracha de Parabrisa Gol</h3>
-                            <p>Específica para Volkswagen Gol G2, G3, G4 e G5</p>
-                            <div class="product-features">
-                                <span class="feature-tag">Original</span>
-                                <span class="feature-tag">Garantia</span>
-                                <span class="feature-tag">Instalação Inclusa</span>
-                            </div>
-                            <div class="product-brands">
-                                <small>Compatível com: VW Gol 1995-2012</small>
-                            </div>
-                            <div class="product-actions">
-                                <button class="btn btn-primary" onclick="sendWhatsAppMessage('Gostaria de saber mais sobre Borracha de Parabrisa Gol')">
-                                    <i class="fab fa-whatsapp"></i>
-                                    Consultar Preço
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Borrachas de Vidro -->
-                <div class="product-item" data-category="vidro">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="images/borracha-vidro-lateral.jpg" alt="Borracha de Vidro Lateral" loading="lazy">
-                            <div class="product-overlay">
-                                <button class="btn btn-small" onclick="openProductModal('vidro-lateral')">
-                                    <i class="fas fa-eye"></i>
-                                    Ver Detalhes
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3>Borracha de Vidro Lateral</h3>
-                            <p>Para vidros laterais fixos e móveis de diversos modelos</p>
-                            <div class="product-features">
-                                <span class="feature-tag">Multi Marcas</span>
-                                <span class="feature-tag">Durável</span>
-                                <span class="feature-tag">Vedação Perfeita</span>
-                            </div>
-                            <div class="product-brands">
-                                <small>Compatível com: Diversos modelos nacionais</small>
-                            </div>
-                            <div class="product-actions">
-                                <button class="btn btn-primary" onclick="sendWhatsAppMessage('Gostaria de saber mais sobre Borracha de Vidro Lateral')">
-                                    <i class="fab fa-whatsapp"></i>
-                                    Consultar Preço
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Perfis Especiais -->
-                <div class="product-item" data-category="perfis">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="images/perfil-borracha-especial.jpg" alt="Perfil de Borracha Especial" loading="lazy">
-                            <div class="product-overlay">
-                                <button class="btn btn-small" onclick="openProductModal('perfil-especial')">
-                                    <i class="fas fa-eye"></i>
-                                    Ver Detalhes
-                                </button>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <h3>Perfis de Borracha Especiais</h3>
-                            <p>Perfis customizados para aplicações específicas</p>
-                            <div class="product-features">
-                                <span class="feature-tag">Customizado</span>
-                                <span class="feature-tag">Sob Medida</span>
-                                <span class="feature-tag">Qualidade Premium</span>
-                            </div>
-                            <div class="product-brands">
-                                <small>Desenvolvido conforme necessidade</small>
-                            </div>
-                            <div class="product-actions">
-                                <button class="btn btn-primary" onclick="sendWhatsAppMessage('Gostaria de saber mais sobre Perfis de Borracha Especiais')">
-                                    <i class="fab fa-whatsapp"></i>
-                                    Consultar Preço
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mais produtos podem ser adicionados aqui -->
-                
+                <?php endforeach; endif; ?>
             </div>
 
-            <!-- Load More Button -->
-            <div class="load-more-section">
-                <button class="btn btn-outline" id="load-more-btn">
-                    <i class="fas fa-plus"></i>
-                    Carregar Mais Produtos
-                </button>
+            <!-- Aviso: milhares de opções / multimarcas -->
+            <div class="products-more-info" style="margin-top:40px;text-align:center;background:#fff5f5;border:1px solid #fecaca;border-radius:12px;padding:32px 24px;">
+                <h3 style="margin:0 0 10px;color:#dc2626;"><i class="fas fa-warehouse"></i> Temos milhares de opções em estoque</h3>
+                <p style="margin:0 auto 20px;max-width:640px;color:#374151;">
+                    <?php echo htmlspecialchars($vitrine['aviso_multimarcas']); ?>
+                </p>
+                <a href="https://wa.me/5567999180553?text=Ol%C3%A1!%20Gostaria%20de%20consultar%20uma%20borracha%20para%20o%20meu%20ve%C3%ADculo." class="btn btn-whatsapp" target="_blank" rel="noopener">
+                    <i class="fab fa-whatsapp"></i>
+                    Consultar minha peça no WhatsApp
+                </a>
             </div>
         </div>
     </section>

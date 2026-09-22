@@ -1,0 +1,214 @@
+/* ==========================================================================
+   refinamentos.css — Ajustes de layout e elegância (Só Borracha "")
+   Carregado por último, complementa style.css / products.css.
+   Objetivos: proporção correta das imagens, header estável, visual moderno.
+   ========================================================================== */
+
+/* ---------- 1) Header sempre visível e estável ---------- */
+.main-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transform: none !important;   /* impede que scripts escondam o header */
+    background: #fff;
+}
+.main-header.scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+}
+
+/* ---------- 2) Proporção correta das imagens (evita "estouro") ---------- */
+
+/* Hero da home */
+.hero-image { max-width: 560px; margin-left: auto; }
+.hero-image img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    height: auto;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .12);
+}
+
+/* Cards de produto (home e página de produtos) — proporção uniforme */
+.product-card .product-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: #f1f5f9;
+    border-radius: 12px 12px 0 0;
+}
+.product-card .product-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+.product-card:hover .product-image img { transform: scale(1.06); }
+
+/* Imagem da seção "Sobre" */
+.about-image img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    height: auto;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+/* Logo do cabeçalho com tamanho fixo e proporcional */
+.main-header .logo { height: 52px; width: auto; object-fit: contain; }
+
+/* Qualquer imagem nunca ultrapassa o container */
+img { max-width: 100%; height: auto; }
+
+/* ---------- 3) Cards mais elegantes ---------- */
+.product-card,
+.service-card {
+    border: 1px solid #eef2f7;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+.product-card:hover,
+.service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, .10);
+}
+.product-info { padding: 20px; }
+.product-info h3 { margin: 0 0 8px; font-size: 1.15rem; }
+.product-info p { color: #64748b; margin: 0 0 14px; }
+
+/* Tags/badges de features */
+.feature-tag {
+    display: inline-block;
+    background: #fff1f1;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 600;
+    margin: 0 4px 4px 0;
+}
+.product-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    z-index: 2;
+    background: #dc2626;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(220, 38, 38, .3);
+}
+
+/* ---------- 4) Grade de produtos: 3 colunas no desktop (2 linhas x 3 = 6) ---------- */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    align-items: stretch;
+}
+@media (max-width: 992px) {
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .products-grid { grid-template-columns: 1fr; }
+}
+.product-item { height: 100%; }
+.product-item > .product-card { height: 100%; display: flex; flex-direction: column; }
+.product-item .product-info { flex: 1; display: flex; flex-direction: column; }
+.product-item .product-actions { margin-top: auto; }
+
+/* ---------- 5) Botões mais elegantes ---------- */
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: transform .15s ease, opacity .15s ease, background .2s ease, color .2s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-whatsapp { background: #25d366; color: #fff; }
+.btn-whatsapp:hover { background: #1ebe57; color: #fff; }
+
+/* Correção de contraste: botões "outline" sobre fundo VERMELHO ficavam
+   ilegíveis (texto vermelho sobre fundo vermelho). Aqui eles passam a ter
+   texto e borda brancos, invertendo no hover. Vale para hero e seções CTA
+   com fundo vermelho. NÃO afeta o .products-cta da home (fundo claro). */
+.hero-section .btn-outline,
+.contact-cta-section .btn-outline,
+section.products-cta .btn-outline,
+.partnership-cta .btn-outline {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+.hero-section .btn-outline:hover,
+.contact-cta-section .btn-outline:hover,
+section.products-cta .btn-outline:hover,
+.partnership-cta .btn-outline:hover {
+    background-color: #ffffff;
+    color: #dc2626;
+    border-color: #ffffff;
+}
+
+/* Botão primário sobre fundo vermelho das seções CTA: fundo branco + texto
+   vermelho (mais destaque e legibilidade). O hero mantém o "Ver Produtos"
+   como está (já legível/destacado), por isso NÃO entra aqui. */
+.contact-cta-section .btn-primary,
+section.products-cta .btn-primary,
+.partnership-cta .btn-primary {
+    background-color: #ffffff;
+    color: #dc2626;
+}
+.contact-cta-section .btn-primary:hover,
+section.products-cta .btn-primary:hover,
+.partnership-cta .btn-primary:hover {
+    background-color: #f8fafc;
+    color: #b91c1c;
+}
+
+/* Home: o .products-cta fica sobre fundo CLARO — mantém botão vermelho padrão */
+.products-section .products-cta .btn-primary {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+.products-section .products-cta .btn-primary:hover {
+    background-color: #b91c1c;
+    color: #ffffff;
+}
+
+/* ---------- 6) Cabeçalhos de seção ---------- */
+.section-header { text-align: center; margin-bottom: 40px; }
+.section-header h2 {
+    font-size: 2rem;
+    margin: 0 0 8px;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 12px;
+}
+.section-header h2::after {
+    content: "";
+    position: absolute;
+    left: 50%; bottom: 0;
+    width: 60px; height: 3px;
+    background: #dc2626;
+    border-radius: 2px;
+    transform: translateX(-50%);
+}
+.section-header p { color: #64748b; }
+
+/* ---------- 7) Banner "milhares de opções" ---------- */
+.products-more-info { box-shadow: 0 8px 24px rgba(220, 38, 38, .06); }
+
+/* ---------- 8) Responsividade fina ---------- */
+@media (max-width: 768px) {
+    .hero-image { margin: 24px auto 0; }
+    .section-header h2 { font-size: 1.6rem; }
+    .products-grid { gap: 20px; }
+}

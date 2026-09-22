@@ -8,5 +8,19 @@ Packages
 .MD
 .MD/
 arquivos/
+Docs/
+Docs/*
 send_mail_smtp.php
 site/public/send_mail_smtp.php
+
+# Segredos e ambiente (NUNCA versionar) - manter apenas .env.example
+.env
+*.env
+!.env.example
+site/.env
+site/public/.env
+
+# Cookies/artefatos e backups de limpeza
+cookies.txt
+_backup_limpeza_*/
+site/_backup_limpeza_*/

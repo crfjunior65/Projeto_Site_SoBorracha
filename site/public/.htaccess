@@ -1,0 +1,29 @@
+# Proteção do webroot público - Só Borracha
+# Todo o site fica em public_html/, então protegemos os arquivos sensíveis aqui.
+
+# 1) Bloquear .env, .env.example e qualquer arquivo iniciado por ponto
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<FilesMatch "(\.env(\..*)?|composer\.(json|lock))$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 2) Bloquear acesso direto à pasta includes/ (classes e loader de env)
+RedirectMatch 403 ^/includes/.*$
+
+# 3) Impedir listagem de diretórios
+Options -Indexes

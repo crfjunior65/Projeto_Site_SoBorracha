@@ -1,0 +1,54 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentação
+README.md
+INSTALACAO.md
+*.md
+
+# Logs
+logs/
+*.log
+
+# Cache
+.cache/
+tmp/
+temp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node modules (se houver)
+node_modules/
+npm-debug.log
+
+# Composer (se houver)
+vendor/
+composer.lock
+
+# Uploads temporários
+admin/uploads/temp/
+
+# Backups
+*.sql.bak
+*.sql.backup
+backup/
+
+# Configurações locais
+config/database.local.php
+.env.local

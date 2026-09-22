@@ -1,0 +1,450 @@
+/**
+ * JavaScript para a página de fornecedores
+ * Só Borracha ""
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Elementos
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const supplierCards = document.querySelectorAll('.supplier-card');
+    const suppliersGrid = document.getElementById('suppliersGrid');
+    
+    // Inicializar filtros
+    initializeFilters();
+    
+    // Inicializar animações
+    initializeAnimations();
+    
+    // Inicializar lazy loading para imagens
+    initializeLazyLoading();
+    
+    /**
+     * Inicializar sistema de filtros
+     */
+    function initializeFilters() {
+        if (filterButtons.length === 0) return;
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const specialty = this.getAttribute('data-specialty');
+                
+                // Atualizar botões ativos
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filtrar fornecedores
+                filterSuppliers(specialty);
+                
+                // Adicionar efeito de loading
+                showLoadingEffect();
+            });
+        });
+    }
+    
+    /**
+     * Filtrar fornecedores por especialidade
+     */
+    function filterSuppliers(specialty) {
+        let visibleCount = 0;
+        
+        supplierCards.forEach((card, index) => {
+            const cardSpecialties = card.getAttribute('data-specialties');
+            const shouldShow = specialty === 'all' || 
+                              (cardSpecialties && cardSpecialties.includes(specialty));
+            
+            if (shouldShow) {
+                card.style.display = 'block';
+                card.style.animationDelay = `${visibleCount * 0.1}s`;
+                card.classList.add('fade-in');
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+                card.classList.remove('fade-in');
+            }
+        });
+        
+        // Mostrar mensagem se nenhum fornecedor for encontrado
+        showNoResultsMessage(visibleCount === 0);
+        
+        // Atualizar contador
+        updateResultsCounter(visibleCount);
+    }
+    
+    /**
+     * Mostrar efeito de loading
+     */
+    function showLoadingEffect() {
+        if (!suppliersGrid) return;
+        
+        suppliersGrid.style.opacity = '0.5';
+        
+        setTimeout(() => {
+            suppliersGrid.style.opacity = '1';
+        }, 300);
+    }
+    
+    /**
+     * Mostrar mensagem quando não há resultados
+     */
+    function showNoResultsMessage(show) {
+        let noResultsMsg = document.querySelector('.no-results-message');
+        
+        if (show && !noResultsMsg) {
+            noResultsMsg = document.createElement('div');
+            noResultsMsg.className = 'no-results-message';
+            noResultsMsg.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-search"></i>
+                    <h3>Nenhum fornecedor encontrado</h3>
+                    <p>Não encontramos fornecedores com essa especialidade. Tente outro filtro.</p>
+                </div>
+            `;
+            suppliersGrid.parentNode.appendChild(noResultsMsg);
+        } else if (!show && noResultsMsg) {
+            noResultsMsg.remove();
+        }
+    }
+    
+    /**
+     * Atualizar contador de resultados
+     */
+    function updateResultsCounter(count) {
+        let counter = document.querySelector('.results-counter');
+        
+        if (!counter) {
+            counter = document.createElement('div');
+            counter.className = 'results-counter';
+            const filterSection = document.querySelector('.suppliers-filter .container');
+            if (filterSection) {
+                filterSection.appendChild(counter);
+            }
+        }
+        
+        if (count > 0) {
+            counter.innerHTML = `
+                <p class="counter-text">
+                    <i class="fas fa-info-circle"></i>
+                    Mostrando ${count} fornecedor${count !== 1 ? 'es' : ''}
+                </p>
+            `;
+            counter.style.display = 'block';
+        } else {
+            counter.style.display = 'none';
+        }
+    }
+    
+    /**
+     * Inicializar animações
+     */
+    function initializeAnimations() {
+        // Animação de entrada dos cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+        
+        supplierCards.forEach(card => {
+            observer.observe(card);
+        });
+        
+        // Animação de hover nos cards
+        supplierCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.classList.add('hover-effect');
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.classList.remove('hover-effect');
+            });
+        });
+    }
+    
+    /**
+     * Inicializar lazy loading para imagens
+     */
+    function initializeLazyLoading() {
+        const images = document.querySelectorAll('img[loading="lazy"]');
+        
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.classList.add('loaded');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            images.forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+    }
+    
+    /**
+     * Funcionalidade de busca (se implementada)
+     */
+    function initializeSearch() {
+        const searchInput = document.querySelector('.search-suppliers');
+        if (!searchInput) return;
+        
+        let searchTimeout;
+        
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.toLowerCase().trim();
+            
+            searchTimeout = setTimeout(() => {
+                searchSuppliers(query);
+            }, 300);
+        });
+    }
+    
+    /**
+     * Buscar fornecedores por nome ou empresa
+     */
+    function searchSuppliers(query) {
+        let visibleCount = 0;
+        
+        supplierCards.forEach(card => {
+            const name = card.querySelector('h3').textContent.toLowerCase();
+            const company = card.querySelector('.company-name').textContent.toLowerCase();
+            const description = card.querySelector('.supplier-description p');
+            const descriptionText = description ? description.textContent.toLowerCase() : '';
+            
+            const matches = name.includes(query) || 
+                          company.includes(query) || 
+                          descriptionText.includes(query);
+            
+            if (query === '' || matches) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        showNoResultsMessage(visibleCount === 0);
+        updateResultsCounter(visibleCount);
+    }
+    
+    /**
+     * Funcionalidade de compartilhamento
+     */
+    function initializeSharing() {
+        const shareButtons = document.querySelectorAll('.share-supplier');
+        
+        shareButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const supplierName = this.closest('.supplier-card').querySelector('h3').textContent;
+                const url = window.location.href;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: `Fornecedor: ${supplierName}`,
+                        text: `Conheça nosso parceiro ${supplierName} - Só Borracha ""`,
+                        url: url
+                    });
+                } else {
+                    // Fallback para cópia do link
+                    copyToClipboard(url);
+                    showToast('Link copiado para a área de transferência!');
+                }
+            });
+        });
+    }
+    
+    /**
+     * Copiar texto para área de transferência
+     */
+    function copyToClipboard(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+    
+    /**
+     * Mostrar toast de notificação
+     */
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.textContent = message;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 100);
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+    
+    /**
+     * Tracking de eventos (Google Analytics)
+     */
+    function trackEvent(action, category, label) {
+        if (typeof gtag !== 'undefined') {
+            gtag('event', action, {
+                event_category: category,
+                event_label: label
+            });
+        }
+    }
+    
+    /**
+     * Adicionar event listeners para tracking
+     */
+    function initializeTracking() {
+        // Track cliques em contatos de fornecedores
+        document.querySelectorAll('.contact-item').forEach(link => {
+            link.addEventListener('click', function() {
+                const supplierName = this.closest('.supplier-card').querySelector('h3').textContent;
+                const contactType = this.querySelector('i').className.includes('phone') ? 'phone' :
+                                  this.querySelector('i').className.includes('envelope') ? 'email' :
+                                  this.querySelector('i').className.includes('whatsapp') ? 'whatsapp' : 'website';
+                
+                trackEvent('supplier_contact', 'engagement', `${supplierName} - ${contactType}`);
+            });
+        });
+        
+        // Track uso de filtros
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const specialty = this.getAttribute('data-specialty');
+                trackEvent('filter_use', 'suppliers', specialty);
+            });
+        });
+    }
+    
+    // Inicializar funcionalidades adicionais
+    initializeSearch();
+    initializeSharing();
+    initializeTracking();
+    
+    // Adicionar estilos CSS dinâmicos
+    addDynamicStyles();
+    
+    /**
+     * Adicionar estilos CSS dinâmicos
+     */
+    function addDynamicStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .fade-in {
+                animation: fadeInUp 0.6s ease forwards;
+            }
+            
+            .animate-in {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .hover-effect {
+                transform: translateY(-8px) scale(1.02);
+            }
+            
+            .results-counter {
+                text-align: center;
+                margin-top: 20px;
+            }
+            
+            .counter-text {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 16px;
+                background: #e3f2fd;
+                color: #1976d2;
+                border-radius: 20px;
+                font-size: 14px;
+                font-weight: 500;
+            }
+            
+            .no-results-message {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding: 60px 20px;
+            }
+            
+            .toast-notification {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #2c3e50;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 10000;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.3s ease;
+            }
+            
+            .toast-notification.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            img.loaded {
+                opacity: 1;
+                transition: opacity 0.3s ease;
+            }
+            
+            @media (max-width: 768px) {
+                .results-counter {
+                    margin-top: 15px;
+                }
+                
+                .counter-text {
+                    font-size: 13px;
+                    padding: 6px 12px;
+                }
+            }
+        `;
+        
+        document.head.appendChild(style);
+    }
+});
+
+/**
+ * Função para scroll suave até seção
+ */
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
+/**
+ * Função para abrir modal de fornecedor (se implementado)
+ */
+function openSupplierModal(supplierId) {
+    // Implementar modal com detalhes do fornecedor
+    console.log('Abrir modal do fornecedor:', supplierId);
+}

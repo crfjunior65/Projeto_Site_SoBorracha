@@ -1,0 +1,59 @@
+[
+    {
+        "id": "borrachas-continental",
+        "name": "Borrachas Continental",
+        "company_name": "Continental Borrachas Ltda",
+        "email": "contato@continental.com.br",
+        "phone": "(11) 3456-7890",
+        "whatsapp": "",
+        "website": "",
+        "city": "São Paulo",
+        "state": "SP",
+        "description": "Fornecedor especializado em borrachas de alta qualidade para o mercado automotivo.",
+        "logo_image": "",
+        "specialties": [
+            "Borrachas de Porta",
+            "Perfis Especiais"
+        ],
+        "status": "active",
+        "featured": true
+    },
+    {
+        "id": "autoved-vedacoes",
+        "name": "AutoVed Vedações",
+        "company_name": "AutoVed Indústria e Comércio",
+        "email": "vendas@autoved.com.br",
+        "phone": "(21) 2345-6789",
+        "whatsapp": "",
+        "website": "",
+        "city": "Rio de Janeiro",
+        "state": "RJ",
+        "description": "Indústria especializada em vedações automotivas e perfis de borracha.",
+        "logo_image": "",
+        "specialties": [
+            "Borrachas de Parabrisa",
+            "Vedações Especiais"
+        ],
+        "status": "active",
+        "featured": true
+    },
+    {
+        "id": "flex-borrachas",
+        "name": "Flex Borrachas",
+        "company_name": "Flex Borrachas e Vedações",
+        "email": "comercial@flexborrachas.com.br",
+        "phone": "(31) 3456-7890",
+        "whatsapp": "",
+        "website": "",
+        "city": "Belo Horizonte",
+        "state": "MG",
+        "description": "Fabricante de correias e borrachas técnicas para o setor automotivo.",
+        "logo_image": "",
+        "specialties": [
+            "Correias Automotivas",
+            "Borrachas Técnicas"
+        ],
+        "status": "active",
+        "featured": false
+    }
+]

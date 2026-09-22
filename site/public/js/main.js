@@ -1,4 +1,4 @@
-// ===== MODERN JAVASCRIPT FOR SÓ BORRACHA LTDA =====
+// ===== MODERN JAVASCRIPT FOR SÓ BORRACHA "" =====
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all components
@@ -58,26 +58,21 @@ function initScrollEffects() {
         
         window.addEventListener('scroll', () => {
             const currentScrollY = window.scrollY;
-            
-            // Add shadow on scroll
+
+            // Add shadow on scroll (header permanece sempre visível — sticky)
             if (currentScrollY > 10) {
+                header.classList.add('scrolled');
                 header.style.boxShadow = '0 4px 6px -1px rgb(0 0 0 / 0.1)';
             } else {
+                header.classList.remove('scrolled');
                 header.style.boxShadow = '0 1px 2px 0 rgb(0 0 0 / 0.05)';
             }
-            
-            // Hide/show header on scroll
-            if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                header.style.transform = 'translateY(-100%)';
-            } else {
-                header.style.transform = 'translateY(0)';
-            }
-            
+
             lastScrollY = currentScrollY;
         });
-        
-        // Add transition to header
-        header.style.transition = 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out';
+
+        // Transição suave apenas na sombra (não escondemos mais o header)
+        header.style.transition = 'box-shadow 0.3s ease-in-out';
     }
 }
 
@@ -129,45 +124,65 @@ function initSmoothScrolling() {
 }
 
 // ===== CONTACT FORM =====
+// NOTA: Na página de contato (contato.php), o envio do formulário é tratado
+// por js/contact.js, que faz o fetch() real para send_mail_final.php.
+// Esta função só assume o controle quando contact.js NÃO está presente,
+// evitando handlers de submit duplicados e o antigo mock com setTimeout.
 function initContactForm() {
     const contactForm = document.querySelector('#contact-form');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            
-            // Show loading state
-            submitBtn.textContent = 'Enviando...';
+
+    // Se contact.js já cuidou do formulário, não faz nada aqui.
+    if (!contactForm || window.__contactFormHandled) {
+        return;
+    }
+    window.__contactFormHandled = true;
+
+    const endpoint = contactForm.getAttribute('action') || 'send_mail_final.php';
+
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn ? submitBtn.innerHTML : '';
+
+        if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
             submitBtn.disabled = true;
             submitBtn.classList.add('loading');
-            
-            // Simulate form submission (replace with actual endpoint)
-            setTimeout(() => {
-                // Show success message
-                showNotification('Mensagem enviada com sucesso!', 'success');
-                
-                // Reset form
-                this.reset();
-                
-                // Reset button
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('loading');
-            }, 2000);
-        });
-        
-        // Form validation
-        const inputs = contactForm.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('blur', validateField);
-            input.addEventListener('input', clearValidation);
-        });
-    }
+        }
+
+        fetch(endpoint, { method: 'POST', body: formData })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message || 'Mensagem enviada com sucesso!', 'success');
+                    this.reset();
+                } else {
+                    showNotification(data.message || 'Erro ao enviar mensagem. Tente novamente.', 'error');
+                    if (Array.isArray(data.errors)) {
+                        data.errors.forEach(err => showNotification(err, 'error'));
+                    }
+                }
+            })
+            .catch(() => {
+                showNotification('Erro de conexão. Tente novamente ou fale conosco pelo WhatsApp.', 'error');
+            })
+            .finally(() => {
+                if (submitBtn) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                }
+            });
+    });
+
+    // Form validation
+    const inputs = contactForm.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', validateField);
+        input.addEventListener('input', clearValidation);
+    });
 }
 
 // ===== FORM VALIDATION =====
@@ -298,7 +313,7 @@ function showNotification(message, type = 'info') {
 // ===== WHATSAPP INTEGRATION =====
 function sendWhatsAppMessage(message = '') {
     const phone = '5567999180553';
-    const defaultMessage = 'Olá! Gostaria de saber mais sobre os produtos da Só Borracha Ltda.';
+    const defaultMessage = 'Olá! Gostaria de saber mais sobre os produtos da Só Borracha.';
     const finalMessage = message || defaultMessage;
     
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(finalMessage)}`;

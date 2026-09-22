@@ -124,10 +124,10 @@ function initContactIntegration() {
             
             switch(contactType) {
                 case 'whatsapp':
-                    sendWhatsAppMessage('Olá! Vi o site de vocês e gostaria de saber mais sobre os produtos da Só Borracha Ltda.');
+                    sendWhatsAppMessage('Olá! Vi o site de vocês e gostaria de saber mais sobre os produtos da Só Borracha.');
                     break;
                 case 'email':
-                    window.location.href = 'mailto:ronaldo@soborracha.com.br?subject=Contato via Site&body=Olá, gostaria de saber mais sobre os produtos da Só Borracha Ltda.';
+                    window.location.href = 'mailto:ronaldo@soborracha.com.br?subject=Contato via Site&body=Olá, gostaria de saber mais sobre os produtos da Só Borracha.';
                     break;
                 case 'phone':
                     window.location.href = 'tel:+5567999180553';

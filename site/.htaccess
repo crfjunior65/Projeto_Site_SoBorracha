@@ -1,0 +1,28 @@
+# Proteção de arquivos sensíveis - Só Borracha Ltda
+# Bloqueia acesso direto via navegador a arquivos de configuração/segredos.
+
+# Apache 2.4+
+<IfModule mod_authz_core.c>
+    <FilesMatch "(^\.env|\.env\..*|composer\.(json|lock)|\.gitignore)$">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+
+# Apache 2.2 (fallback)
+<IfModule !mod_authz_core.c>
+    <FilesMatch "(^\.env|\.env\..*|composer\.(json|lock)|\.gitignore)$">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+</IfModule>
+
+# Bloquear acesso a qualquer arquivo que comece com ponto
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

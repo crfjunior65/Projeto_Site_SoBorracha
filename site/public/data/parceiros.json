@@ -1,0 +1,50 @@
+[
+    {
+        "id": "auto-pecas-campo-grande",
+        "name": "Auto Peças Campo Grande",
+        "company_name": "Auto Peças Campo Grande """,
+        "tipo": "distribuidor",
+        "email": "contato@apcg.com.br",
+        "phone": "(67) 3333-1000",
+        "whatsapp": "",
+        "website": "",
+        "city": "Campo Grande",
+        "state": "MS",
+        "description": "Distribuidor oficial da Só Borracha na região Centro-Oeste, atendendo lojas e oficinas de todo o estado.",
+        "logo_image": "",
+        "status": "active",
+        "featured": true
+    },
+    {
+        "id": "oficina-do-ze",
+        "name": "Oficina do Zé",
+        "company_name": "Zé Mecânica e Vedações",
+        "tipo": "oficina",
+        "email": "",
+        "phone": "(67) 98888-2020",
+        "whatsapp": "5567988882020",
+        "website": "",
+        "city": "Dourados",
+        "state": "MS",
+        "description": "Oficina credenciada que utiliza e instala as borrachas Só Borracha com garantia.",
+        "logo_image": "",
+        "status": "active",
+        "featured": false
+    },
+    {
+        "id": "revenda-pantanal",
+        "name": "Revenda Pantanal Autopeças",
+        "company_name": "Pantanal Comércio de Autopeças",
+        "tipo": "revendedor",
+        "email": "vendas@pantanalpecas.com.br",
+        "phone": "(67) 3222-3040",
+        "whatsapp": "",
+        "website": "",
+        "city": "Três Lagoas",
+        "state": "MS",
+        "description": "Revendedor parceiro com amplo estoque de borrachas automotivas Só Borracha.",
+        "logo_image": "",
+        "status": "active",
+        "featured": false
+    }
+]

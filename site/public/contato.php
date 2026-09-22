@@ -1,6 +1,6 @@
 <?php 
-$pageTitle = "Contato - Só Borracha Ltda | Fale Conosco - Campo Grande MS";
-$pageDescription = "Entre em contato com a Só Borracha Ltda. Telefone: (67) 99918-0553. Endereço: Av. Calogeras, 1300, Campo Grande - MS. Atendimento especializado.";
+$pageTitle = "Contato - Só Borracha | Fale Conosco - Campo Grande MS";
+$pageDescription = "Entre em contato com a Só Borracha. Telefone: (67) 99918-0553. Endereço: Av. Calogeras, 1300, Campo Grande - MS. Atendimento especializado.";
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -22,6 +22,7 @@ $pageDescription = "Entre em contato com a Só Borracha Ltda. Telefone: (67) 999
     <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/contact.css">
+    <link rel="stylesheet" href="css/refinamentos.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -104,7 +105,7 @@ $pageDescription = "Entre em contato com a Só Borracha Ltda. Telefone: (67) 999
                     <h2>Envie sua Mensagem</h2>
                     <p>Preencha o formulário abaixo e entraremos em contato o mais breve possível.</p>
                     
-                    <form id="contact-form" class="contact-form" method="POST" action="send_mail.php">
+                    <form id="contact-form" class="contact-form" method="POST" action="send_mail_final.php">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="name">Nome Completo *</label>
@@ -339,7 +340,9 @@ $pageDescription = "Entre em contato com a Só Borracha Ltda. Telefone: (67) 999
 
     <?php include 'includes/footer.php'; ?>
 
-    <script src="js/main.js"></script>
+    <!-- contact.js antes de main.js: define window.__contactFormHandled para
+         evitar handler de submit duplicado vindo do main.js -->
     <script src="js/contact.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

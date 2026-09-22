@@ -1,0 +1,111 @@
+{
+    "settings": {
+        "vitrine_titulo": "Nossos Produtos",
+        "vitrine_subtitulo": "Estes são apenas alguns exemplos. Trabalhamos com milhares de opções de borrachas automotivas para todas as marcas e modelos.",
+        "aviso_multimarcas": "Não encontrou o que procura? Temos milhares de itens em estoque e sob encomenda. Fale conosco no WhatsApp e consulte a peça do seu veículo."
+    },
+    "produtos": [
+        {
+            "id": "porta-universal",
+            "nome": "Borracha de Porta Universal",
+            "categoria": "porta",
+            "descricao": "Vedação perfeita para portas de veículos nacionais e importados.",
+            "imagem": "images/borracha-porta-universal.jpg",
+            "features": [
+                "Universal",
+                "Resistente",
+                "Fácil Instalação"
+            ],
+            "compatibilidade": "Volkswagen, Fiat, Chevrolet, Ford, Toyota",
+            "destaque": true,
+            "badge": "Mais Vendido",
+            "ordem": 1,
+            "ativo": true
+        },
+        {
+            "id": "parabrisa-gol",
+            "nome": "Borracha de Parabrisa Gol",
+            "categoria": "parabrisa",
+            "descricao": "Específica para Volkswagen Gol G2, G3, G4 e G5.",
+            "imagem": "images/borracha-parabrisa-gol.jpg",
+            "features": [
+                "Original",
+                "Garantia",
+                "Instalação Inclusa"
+            ],
+            "compatibilidade": "VW Gol 1995-2012",
+            "destaque": false,
+            "badge": "",
+            "ordem": 2,
+            "ativo": true
+        },
+        {
+            "id": "vidro-lateral",
+            "nome": "Borracha de Vidro Lateral",
+            "categoria": "vidro",
+            "descricao": "Para vidros laterais fixos e móveis de diversos modelos.",
+            "imagem": "images/borracha-vidro-lateral.jpg",
+            "features": [
+                "Multi Marcas",
+                "Durável",
+                "Vedação Perfeita"
+            ],
+            "compatibilidade": "Diversos modelos nacionais",
+            "destaque": false,
+            "badge": "",
+            "ordem": 3,
+            "ativo": true
+        },
+        {
+            "id": "perfil-especial",
+            "nome": "Perfis de Borracha Especiais",
+            "categoria": "perfis",
+            "descricao": "Perfis customizados para aplicações específicas.",
+            "imagem": "images/perfil-borracha-especial.jpg",
+            "features": [
+                "Customizado",
+                "Sob Medida",
+                "Qualidade Premium"
+            ],
+            "compatibilidade": "Desenvolvido conforme necessidade",
+            "destaque": false,
+            "badge": "",
+            "ordem": 4,
+            "ativo": true
+        },
+        {
+            "id": "borracha-porta-malas",
+            "nome": "Borracha de Porta-Malas",
+            "categoria": "porta",
+            "descricao": "Vedação para tampa de porta-malas, protege contra entrada de água e poeira.",
+            "imagem": "images/borracha-porta-malas.webp",
+            "features": [
+                "Vedação Total",
+                "Anti-infiltração",
+                "Durável"
+            ],
+            "compatibilidade": "Diversos modelos nacionais e importados",
+            "destaque": false,
+            "badge": "",
+            "ordem": 5,
+            "ativo": true
+        },
+        {
+            "id": "pecas-vulcanizadas",
+            "nome": "Peças Vulcanizadas Sob Medida",
+            "categoria": "perfis",
+            "descricao": "Peças e perfis de borracha vulcanizada produzidos conforme sua necessidade.",
+            "imagem": "images/pecas-vulcanizadas-produto.jpg",
+            "features": [
+                "Sob Encomenda",
+                "Alta Durabilidade",
+                "Multiaplicação"
+            ],
+            "compatibilidade": "Aplicações automotivas e industriais",
+            "destaque": false,
+            "badge": "",
+            "ordem": 6,
+            "ativo": true
+        }
+    ]
+}

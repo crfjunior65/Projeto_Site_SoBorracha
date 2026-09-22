@@ -1,6 +1,6 @@
 <?php 
-$pageTitle = "Sobre Nós - Só Borracha Ltda | 25 Anos de Experiência em Campo Grande - MS";
-$pageDescription = "Conheça a história da Só Borracha Ltda. Há mais de 25 anos oferecendo borrachas automotivas de qualidade em Campo Grande - MS. Tradição e confiança.";
+$pageTitle = "Sobre Nós - Só Borracha | 25 Anos de Experiência em Campo Grande - MS";
+$pageDescription = "Conheça a história da Só Borracha. Há mais de 25 anos oferecendo borrachas automotivas de qualidade em Campo Grande - MS. Tradição e confiança.";
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -22,6 +22,7 @@ $pageDescription = "Conheça a história da Só Borracha Ltda. Há mais de 25 an
     <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="css/refinamentos.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -47,9 +48,9 @@ $pageDescription = "Conheça a história da Só Borracha Ltda. Há mais de 25 an
             <div class="story-content">
                 <div class="story-text">
                     <div class="story-intro">
-                        <h2>Só Borracha Ltda</h2>
+                        <h2>Só Borracha</h2>
                         <p class="lead">
-                            Fundada em 1998 em Campo Grande - MS, a Só Borracha Ltda nasceu do sonho de 
+                            Fundada em 1998 em Campo Grande - MS, a Só Borracha nasceu do sonho de 
                             oferecer produtos de qualidade superior no segmento de borrachas automotivas.
                         </p>
                     </div>
@@ -94,7 +95,7 @@ $pageDescription = "Conheça a história da Só Borracha Ltda. Há mais de 25 an
                 </div>
                 
                 <div class="story-image">
-                    <img src="images/loja-fachada.jpg" alt="Fachada da Só Borracha Ltda" loading="lazy">
+                    <img src="images/loja-fachada.jpg" alt="Fachada da Só Borracha" loading="lazy">
                     <div class="image-caption">
                         <p>Nossa loja na Av. Calogeras, 1300 - Campo Grande/MS</p>
                     </div>
