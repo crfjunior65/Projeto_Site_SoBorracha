@@ -1,154 +1,99 @@
-# Só Borracha Ltda - Site Institucional
+# Só Borracha — Site Institucional
 
-Este projeto é um site institucional para a loja **Só Borracha Ltda**, especializada em borrachas automotivas para varejo e atacado.
+Site institucional da **Só Borracha**, loja especializada em borrachas automotivas
+(varejo e atacado) em Campo Grande - MS.
+
+Desenvolvido em **PHP puro (8.2) + HTML/CSS/JS**, com persistência em **arquivos JSON**
+(sem banco de dados), o que simplifica o deploy e a segurança em cPanel.
+
+---
 
 ## Funcionalidades
 
-- **Página Inicial:** Apresentação da empresa, produtos e diferenciais.
-- **Sobre:** Informações sobre a história e missão da Só Borracha.
-- **Contato:** Formulário para contato, endereço, e-mail e horário de funcionamento.
-- **Design Responsivo:** Layout moderno e adaptável para dispositivos móveis.
-- **Imagens Ilustrativas:** Uso de imagens de borrachas automotivas e carros (livres de direitos).
-- **Rodapé:** Informações de copyright e dados de contato.
+- **Página inicial** com visual moderno (header sticky com glassmorphism, hero,
+  faixa de credibilidade, serviços, catálogo dinâmico, diferenciais e CTA).
+- **Produtos** — vitrine dinâmica lida de `data/produtos.json` (a home exibe até 6 destaques).
+- **Parceiros** — rede de distribuidores/revendedores/oficinas (lida de `data/parceiros.json`).
+- **Sobre** e **Contato** — formulário com envio por SMTP.
+- **Formulário de contato** com envio real (SMTP), deduplicação anti-duplo-envio,
+  rate limiting por IP e anti-spam (honeypot + time-trap).
+- **Painel administrativo** (login por `.env`, sem banco): CRUD de produtos e parceiros,
+  upload de imagens e troca de imagens do site.
+- **Design responsivo** e acessível (respeita `prefers-reduced-motion`).
+- **WhatsApp flutuante** e redes sociais no cabeçalho.
+
+---
+
+## Design System (modernização)
+
+- **Tipografia:** Outfit (títulos) + Plus Jakarta Sans (texto).
+- **Estilo:** cantos arredondados (2xl/3xl), sombras suaves, glassmorphism leve.
+- **Cor da marca:** vermelho `#dc2626` sobre grafite `#0f172a`.
+- **Animações leves:** header compacto ao rolar, reveal on scroll e contagem de números
+  (`js/home-anim.js`, sem dependências).
+- CSS da modernização em `css/home-moderna.css` (carregado por último, sobrepõe o base
+  sem reescrevê-lo). As seções da home usam classes `.hm-*`.
+
+---
 
 ## Informações de Contato
 
-- **Endereço:** Av. Calogeras, 1300, Campo Grande - MS
+- **Endereço:** Av. Calogeras, 1300 — Campo Grande - MS
+- **Telefone / WhatsApp:** (67) 99918-0553
 - **E-mail:** ronaldo@soborracha.com.br
-- **Horário de Atendimento:** 7:30 às 17:30
-
-## Como Executar
-
-1. **Docker:** O projeto possui um `Dockerfile` para facilitar a execução em ambiente PHP + Apache.
-2. **Instalação Manual:** Basta copiar os arquivos para um servidor Apache com PHP 8.2+.
-
-## Estrutura de Pastas
-
-- `/public` — Arquivos públicos do site (HTML/PHP, CSS, imagens)
-- `/src/includes` — Componentes reutilizáveis (header, footer)
-- `/Dockerfile` — Configuração para ambiente Docker
+- **Atendimento:** Seg-Sex 7:30 às 17:30 · Sábado 8:00 às 12:00
 
 ---
-/projeto-web/
-├── Dockerfile
-├── docker-compose.yml (opcional)
-└── site/              # Pasta que será mapeada como volume
-    ├── index.php
-    ├── index.html
-    ├── css/
-    └── ...
+
+## Estrutura do Projeto
+
+```
+site/
+└── public/                 # Webroot (vai para public_html/ no cPanel)
+    ├── index.php           # Home (dinâmica: destaques do JSON)
+    ├── produtos.php        # Vitrine de produtos
+    ├── parceiros.php       # Rede de parceiros
+    ├── sobre.php
+    ├── contato.php         # Formulário (fetch -> send_mail_final.php)
+    ├── send_mail_final.php # Envio via SMTP + dedup + rate limit + anti-spam
+    ├── css/                # style, components, refinamentos, home-moderna
+    ├── js/                 # main, contact, home-anim
+    ├── includes/           # header, footer, ProductStore, PartnerStore, mailer, env
+    ├── data/               # produtos.json, parceiros.json (bloqueados via .htaccess)
+    ├── admin/              # Painel administrativo (login por .env)
+    └── images/             # imagens do site e uploads
+```
+
 ---
-# Docker Web Server with Apache + PHP
 
-## 📋 Project Structure
+## Como Executar (ambiente de desenvolvimento)
 
-/projeto-web/
-├── Dockerfile # Container configuration
-├── docker-compose.yml # Service definition (recommended)
-├── php.ini # Custom PHP settings (optional)
-└── site/ # Website files (mapped volume)
-├── index.php
-├── index.html
-└── css/
-    ---
+O host de desenvolvimento não precisa ter PHP instalado — usa-se **Docker**.
 
-## 🚀 Quick Start
+### Servidor local rápido (PHP embutido)
 
-### With Docker Compose (recommended):
 ```bash
-docker-compose up -d
+docker run --rm -p 8890:80 \
+  -v "$(pwd)/site/public:/var/www/html" \
+  php:8.2-apache
+# acesse http://localhost:8890
+```
 
-With Docker only:
-bash
+### Lint / validação de sintaxe
 
-docker build -t web-server .
-docker run -d -p 8080:80 -v $(pwd)/site:/var/www/html web-server
-
-🔧 Configuration Files
-Dockerfile
-dockerfile
-
-FROM php:8.2-apache
-
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y \
-        libzip-dev \
-        zip \
-        unzip && \
-    docker-php-ext-install zip pdo pdo_mysql && \
-    a2enmod rewrite
-
-WORKDIR /var/www/html
-EXPOSE 80
-CMD ["apache2-foreground"]
-
-docker-compose.yml
-yaml
-
-version: '3.8'
-
-services:
-  web:
-    build: .
-    ports:
-      - "8080:80"
-    volumes:
-      - ./site:/var/www/html
-    restart: unless-stopped
-
-🌐 Access
-
-    Web Server: http://localhost:8080
-
-    Files: Edit in ./site/ (changes appear immediately)
-
-🛠️ Customization
-Add PHP extensions:
-dockerfile
-
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
-
-Custom php.ini:
-
-    Create php.ini file
-
-    Add to Dockerfile:
-
-dockerfile
-
-COPY php.ini /usr/local/etc/php/conf.d/custom.ini
-
-📜 Useful Commands
-Command	Description
-docker-compose logs	View service logs
-docker exec -it web-server bash	Enter container
-docker-compose down	Stop services
-🔍 Troubleshooting
-
-    Permission issues:
-    bash
-
-sudo chown -R $USER:$USER ./site
-
-Apache not starting:
-bash
-
-    docker-compose logs web
-
-📌 Note: For production environments, consider adding:
-
-    SSL certificates
-
-    Reverse proxy (Nginx)
-
-    Proper security hardening
+```bash
+docker run --rm -v "$(pwd)/site/public":/pub -w /pub php:8.2-cli php -l index.php
+```
 
 ---
-docker run -d \
-  -p 8080:80 \
-  -v "$(pwd)/site:/var/www/html" \
-  --name meu-site \
-  meu-servidor-web
 
-Desenvolvido por: [Junior Fernandes]
+## Deploy (cPanel)
+
+- Subir o conteúdo de `site/public/` para `public_html/`.
+- Garantir escrita em `data/`, `images/produtos/` e `uploads/parceiros/`.
+- Conferir que `.env` e `data/*.json` retornam **403** (protegidos por `.htaccess`).
+- O `.env` do servidor deve conter as variáveis `SMTP_*` e `ADMIN_*`.
+
+---
+
+Desenvolvido por **Junior Fernandes / CloudFix** — https://www.cloudfix.net.br

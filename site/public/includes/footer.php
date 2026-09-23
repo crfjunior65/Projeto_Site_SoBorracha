@@ -1,4 +1,4 @@
-<footer class="main-footer">
+<footer class="main-footer hm-footer">
     <div class="footer-content">
         <div class="container">
             <div class="footer-sections">
@@ -51,26 +51,27 @@
     <div class="footer-bottom">
         <div class="container">
             <div class="footer-bottom-content">
-                <p class="footer-credits" style="display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span class="footer-credits">
                     &copy; <?php echo date('Y'); ?> Só Borracha. Todos os direitos reservados.
-                    <a href="https://www.cloudfix.net.br" target="_blank" rel="noopener" aria-label="Desenvolvido por CloudFix" title="Desenvolvido por CloudFix" style="display:inline-flex;align-items:center;">
-                        <img src="images/ClodFix-Icone.png" alt="CloudFix" style="height:24px;width:auto;vertical-align:middle;">
+                </span>
+                <span class="footer-by">
+                    Desenvolvido por
+                    <a href="https://www.cloudfix.net.br" target="_blank" rel="noopener" aria-label="Desenvolvido por CloudFix" title="Desenvolvido por CloudFix">
+                        <img src="images/logo-darkSite (SemFundo).png" alt="CloudFix">
                     </a>
-                </p>
-                <div class="footer-social">
-                    <a href="https://wa.me/5567999180553" target="_blank" rel="noopener" aria-label="WhatsApp">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                    <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
+                </span>
             </div>
         </div>
     </div>
 </footer>
 
+<!-- WhatsApp flutuante (global) -->
+<a href="https://wa.me/5567999180553" class="wa-float" target="_blank" rel="noopener" aria-label="Fale conosco no WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
 <!-- Scripts -->
 <script src="js/main.js"></script>
+<script src="js/home-anim.js"></script>
 </body>
 </html>
