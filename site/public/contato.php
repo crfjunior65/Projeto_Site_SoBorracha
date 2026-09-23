@@ -15,6 +15,7 @@ $pageDescription = "Entre em contato com a Só Borracha. Telefone: (67) 99918-05
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,6 +24,7 @@ $pageDescription = "Entre em contato com a Só Borracha. Telefone: (67) 99918-05
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/contact.css">
     <link rel="stylesheet" href="css/refinamentos.css">
+    <link rel="stylesheet" href="css/home-moderna.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
@@ -106,6 +108,16 @@ $pageDescription = "Entre em contato com a Só Borracha. Telefone: (67) 99918-05
                     <p>Preencha o formulário abaixo e entraremos em contato o mais breve possível.</p>
                     
                     <form id="contact-form" class="contact-form" method="POST" action="send_mail_final.php">
+                        <!-- Anti-spam honeypot: invisível para humanos, bots costumam preencher.
+                             Se vier preenchido, o servidor descarta silenciosamente. -->
+                        <div style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+                            <label for="website">Deixe este campo em branco</label>
+                            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+                        <!-- Time-trap anti-spam: momento em que a página carregou.
+                             Envios em menos de alguns segundos são tratados como bot. -->
+                        <input type="hidden" name="form_time" value="<?php echo time(); ?>">
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="name">Nome Completo *</label>

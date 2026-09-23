@@ -24,3 +24,6 @@ site/public/.env
 cookies.txt
 _backup_limpeza_*/
 site/_backup_limpeza_*/
+
+# Backups (nunca versionar)
+*.bak

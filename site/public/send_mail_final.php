@@ -121,6 +121,31 @@ try {
         exit;
     }
 
+    // Anti-spam: honeypot + time-trap.
+    // 1) honeypot: campo "website" é invisível no formulário; humanos não
+    //    preenchem, bots que completam todos os inputs sim. Se veio com
+    //    conteúdo, é bot.
+    // 2) time-trap: "form_time" guarda o horário de carregamento da página.
+    //    Envios quase instantâneos (< $minFillSeconds) são de bots, pois um
+    //    humano leva alguns segundos para preencher o formulário.
+    // Em ambos os casos respondemos "sucesso" para não sinalizar ao bot que
+    // foi bloqueado (mesma estratégia do filtro is_spam mais abaixo).
+    $minFillSeconds = 3;
+    $formTime = isset($_POST['form_time']) ? intval($_POST['form_time']) : 0;
+    $elapsed = time() - $formTime;
+    $honeypotFilled = !empty($_POST['website']);
+    $tooFast = ($formTime <= 0) || ($elapsed < $minFillSeconds);
+
+    if ($honeypotFilled || $tooFast) {
+        $motivo = $honeypotFilled ? 'honeypot' : "time-trap (elapsed={$elapsed}s)";
+        error_log("Bot detectado ($motivo) - IP: $client_ip");
+        echo json_encode([
+            'success' => true,
+            'message' => 'Mensagem enviada com sucesso!'
+        ]);
+        exit;
+    }
+
     // Capturar dados
     $formData = [
         'name'       => sanitize_input($_POST['name'] ?? ''),

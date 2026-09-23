@@ -37,10 +37,11 @@
                 </nav>
                 
                 <div class="header-cta">
-                    <a href="https://wa.me/5567999180553" class="btn-whatsapp" target="_blank">
-                        <i class="fab fa-whatsapp"></i>
-                        Fale Conosco
-                    </a>
+                    <div class="header-social">
+                        <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://wa.me/5567999180553" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
                 
                 <button class="mobile-menu-toggle" aria-label="Menu">
